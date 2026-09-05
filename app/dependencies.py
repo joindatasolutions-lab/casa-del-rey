@@ -25,6 +25,22 @@ def get_current_user(
     return usuario
 
 
+def get_optional_current_user(
+    credentials: HTTPAuthorizationCredentials | None = Depends(security),
+    db: Session = Depends(get_db),
+) -> Usuario | None:
+    if credentials is None:
+        return None
+    payload = decode_access_token(credentials.credentials)
+    user_id = payload.get("sub")
+    if user_id is None:
+        raise HTTPException(status_code=401, detail="Token invalido")
+    usuario = db.get(Usuario, int(user_id))
+    if usuario is None or usuario.estado != "ACTIVO":
+        raise HTTPException(status_code=401, detail="Usuario no autorizado")
+    return usuario
+
+
 def require_super_admin(current_user: Usuario = Depends(get_current_user)) -> Usuario:
     if current_user.rol != "SUPER_ADMIN":
         raise HTTPException(status_code=403, detail="Sin permiso")

@@ -10,6 +10,7 @@ from app.dependencies import assert_group_access, require_admin_access
 from app.models.miembro import Miembro
 from app.models.usuario import Usuario
 from app.schemas.miembro import (
+    MiembroAdminResponse,
     MiembroCreate,
     MiembroCreateResponse,
     MiembroEstadoUpdate,
@@ -38,7 +39,7 @@ RIO_DE_DIOS_VALUES = {"NUEVO", "CHANGE", "PEC", "ADL", "GRADUADO", "LANZADO", "L
 MIEMBRO_ESTADO_VALUES = {"ACTIVO", "INACTIVO"}
 
 
-@router.get("", response_model=list[MiembroPublicResponse])
+@router.get("", response_model=list[MiembroAdminResponse])
 def list_miembros(
     celular: str | None = None,
     db: Session = Depends(get_db),
@@ -185,7 +186,7 @@ def update_rio_de_dios(
     return {"success": True, "member": miembro}
 
 
-@router.get("/{id_miembro}", response_model=MiembroPublicResponse)
+@router.get("/{id_miembro}", response_model=MiembroAdminResponse)
 def get_miembro(
     id_miembro: int,
     db: Session = Depends(get_db),
