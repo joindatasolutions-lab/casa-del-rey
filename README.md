@@ -439,7 +439,16 @@ Variables necesarias:
 - `JWT_EXPIRE_MINUTES`
 - `CORS_ORIGINS`
 
-Para Cloud SQL, configura la conexion segun el proyecto de GCP y define `DB_HOST` de acuerdo con el modo elegido, por ejemplo IP privada o socket Unix si se adapta la configuracion. No despliegues con `CORS_ORIGINS=*` en produccion.
+Para Cloud SQL por IP privada, define `DB_HOST` con la IP privada de la instancia.
+
+Para Cloud Run con Cloud SQL usando socket Unix, monta la instancia de Cloud SQL en el servicio y define:
+
+```env
+DB_HOST=/cloudsql/PROJECT_ID:REGION:INSTANCE_NAME
+DB_PORT=5432
+```
+
+La aplicacion detecta rutas absolutas en `DB_HOST` y las pasa a `psycopg` como host de socket Unix. No despliegues con `CORS_ORIGINS=*` en produccion.
 
 ## Flujo recomendado del piloto
 
