@@ -15,20 +15,27 @@ class Base(DeclarativeBase):
 
 
 def build_database_url() -> URL:
-    if settings.db_host.startswith("/"):
+    db_host = settings.db_host
+    if settings.db_instance_connection_name:
+        db_host = f"/cloudsql/{settings.db_instance_connection_name}"
+
+    if db_host is None:
+        raise ValueError("DB_HOST or DB_INSTANCE_CONNECTION_NAME must be configured")
+
+    if db_host.startswith("/"):
         return URL.create(
             drivername="postgresql+psycopg",
             username=settings.db_user,
             password=settings.db_password,
             database=settings.db_name,
-            query={"host": settings.db_host, "port": str(settings.db_port)},
+            query={"host": db_host, "port": str(settings.db_port)},
         )
 
     return URL.create(
         drivername="postgresql+psycopg",
         username=settings.db_user,
         password=settings.db_password,
-        host=settings.db_host,
+        host=db_host,
         port=settings.db_port,
         database=settings.db_name,
     )

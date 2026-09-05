@@ -9,8 +9,9 @@ ENV_FILE = Path(__file__).resolve().parents[1] / ".env"
 
 
 class Settings(BaseSettings):
-    db_host: str = Field(min_length=1)
-    db_port: int
+    db_host: str | None = None
+    db_port: int | None = 5432
+    db_instance_connection_name: str | None = None
     db_name: str
     db_user: str
     db_password: str = Field(min_length=1)
