@@ -1,0 +1,71 @@
+.dash-home { --dash-sage: #e9f1eb; --dash-sand: #f7efdf; --dash-rose: #f6eae6; padding: 30px clamp(16px, 3vw, 42px) 44px; max-width: 1480px; margin: auto; min-width: 0; color: var(--ink); background: var(--bg); }
+.dash-home * { min-width: 0; }
+.dash-home h1 { margin: 0 0 8px; font-size: clamp(28px, 3vw, 38px); letter-spacing: -1px; }
+.dash-home h2 { margin: 0; font-size: 17px; }
+.dash-home p { line-height: 1.55; }
+.dash-home .dash-heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 26px; }
+.dash-home .dash-heading p { margin: 0; color: var(--muted); font-size: 14px; }
+.dash-home .dash-filters { display: flex; gap: 14px; max-width: 60%; }
+.dash-home .dash-filters label, .dash-home .dash-fixed-group { display: grid; gap: 7px; font-size: 12px; flex: 1; }
+.dash-home select { width: 100%; max-width: 280px; min-height: 44px; padding: 8px 30px 8px 12px; border: 1px solid var(--line); border-radius: 9px; color: var(--ink); background: white; text-overflow: ellipsis; }
+.dash-home .dash-fixed-group strong { align-self: center; overflow-wrap: anywhere; }
+.dash-home .dash-event { display: flex; align-items: center; gap: 16px; padding: 22px; margin-bottom: 20px; border: 1px solid var(--line); border-radius: 16px; background: white; }
+.dash-home .dash-event p { color: var(--muted); margin: 7px 0 0; font-size: 13px; }
+.dash-home .dash-status { margin-left: auto; background: var(--dash-sage); color: var(--primary-strong); padding: 8px 12px; border-radius: 30px; font-size: 12px; text-align: center; }
+.dash-home .dash-icon { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; }
+.dash-home .sage { color: var(--primary); background: var(--dash-sage); }
+.dash-home .sand { color: #806329; background: var(--dash-sand); }
+.dash-home .rose { color: #92594e; background: var(--dash-rose); }
+.dash-home .dash-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 22px; }
+.dash-home .dash-kpi { display: flex; align-items: center; gap: 14px; padding: 22px 18px; background: white; border-radius: 16px; box-shadow: 0 4px 18px rgba(35,57,44,.035); }
+.dash-home .dash-kpi h2 { font-size: 12px; font-weight: 500; color: var(--muted); line-height: 1.5; }
+.dash-home .dash-kpi strong { display: block; font-size: clamp(22px, 2vw, 30px); margin-top: 7px; overflow-wrap: anywhere; }
+.dash-home .dash-panels { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; }
+.dash-home .dash-panel { padding: 26px; border-radius: 18px; background: white; box-shadow: 0 4px 18px rgba(35,57,44,.035); }
+.dash-home .dash-panel > header { display: flex; gap: 12px; align-items: center; margin-bottom: 24px; }
+.dash-home .dash-panel header p { color: var(--muted); font-size: 12px; margin: 6px 0 0; }
+.dash-home .dash-summary { color: var(--muted); font-size: 13px; }
+.dash-home .dash-summary strong { font-size: 30px; color: var(--ink); margin-right: 6px; }
+.dash-home .dash-stack { overflow: hidden; border-radius: 8px; }
+.dash-home .dash-legend { display: flex; flex-wrap: wrap; gap: 16px 22px; margin: 18px 0 26px; }
+.dash-home dt { color: var(--muted); font-size: 12px; }
+.dash-home dd { font-size: 22px; font-weight: 650; margin: 7px 0 0; }
+.dash-home dt i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; }
+.dash-home .dash-action { display: inline-flex; gap: 14px; align-items: center; justify-content: center; min-height: 44px; border-radius: 9px; padding: 10px 18px; background: var(--primary); color: white; font-size: 13px; }
+.dash-home .dash-action:hover { background: var(--primary-strong); }
+.dash-home .dash-distribution { display: grid; gap: 20px; margin-bottom: 0; }
+.dash-home .dash-distribution > div { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
+.dash-home .dash-distribution dd { margin: 0; font-size: 15px; }
+.dash-home .dash-track { grid-column: 1 / -1; height: 10px; border-radius: 8px; overflow: hidden; background: var(--surface-muted); }
+.dash-home .dash-track span { height: 100%; display: block; border-radius: inherit; }
+.dash-home .dash-attendance-state { display: grid; justify-items: center; text-align: center; gap: 10px; border-radius: 12px; background: #faf8f4; padding: 22px 12px; color: var(--primary-strong); }
+.dash-home .dash-attendance-state p { margin: 0; color: var(--muted); font-size: 13px; }
+.dash-home .dash-attendance-counts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.dash-home .dash-indicator-list { margin: 0; }
+.dash-home .dash-indicator-list > div { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.dash-home .dash-indicator-list > div:last-child { border: 0; }
+.dash-home .dash-indicator-list dt { display: flex; align-items: center; gap: 12px; }
+.dash-home .dash-indicator-list dd { margin: 0; }
+.dash-home .dash-note, .dash-home .dash-notice { color: var(--muted); font-size: 13px; }
+.dash-home .dash-notice { padding: 18px; border-radius: 12px; background: white; }
+.dash-home :is(a, select):focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+@media (max-width: 1180px) {
+  .dash-home .dash-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dash-home .dash-heading { align-items: start; flex-direction: column; }
+  .dash-home .dash-filters { max-width: 100%; width: 100%; }
+  .dash-home select { max-width: none; }
+}
+@media (max-width: 700px) {
+  .dash-home { padding: 24px 16px; }
+  .dash-home .dash-panels { grid-template-columns: minmax(0, 1fr); }
+  .dash-home .dash-confirmations { order: 0; }
+  .dash-home .dash-attendance { order: 1; }
+  .dash-home .dash-gender { order: 2; }
+  .dash-home .dash-indicators { order: 3; }
+  .dash-home .dash-panel { padding: 22px 18px; }
+  .dash-home .dash-event { display: grid; grid-template-columns: 44px minmax(0, 1fr); padding: 18px; }
+  .dash-home .dash-status { grid-column: 2; justify-self: start; margin-left: 0; }
+  .dash-home .dash-kpi { padding: 18px 12px; gap: 10px; flex-direction: column; align-items: start; }
+  .dash-home .dash-filters { flex-wrap: wrap; }
+  .dash-home .dash-filters > * { flex-basis: 180px; }
+}

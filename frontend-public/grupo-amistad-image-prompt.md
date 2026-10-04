@@ -1,0 +1,4 @@
+Tool: built-in image_gen (edit).
+Asset: public/grupo-amistad-edades.png
+
+Edit this friendship group photograph for Casa del Rey mobile homepage. Preserve the cozy living room, warm natural daylight, ivory and forest green palette, candid conversation, realistic photography and landscape 3:2 framing. Change the group to visibly represent multiple age ranges: two young people aged about 18–22, two adults about 35–45, and two older adults about 60–70, women and men with diverse Colombian appearances. Six people total sharing a friendly relaxed conversation, naturally smiling, casual age-appropriate clothing. Make the young people clearly youthful and the older people visibly older with natural gray hair. Everyone should fit in the mobile-friendly composition. No lettering, logos, watermark or UI.
