@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.dependencies import assert_group_access, get_optional_current_user, require_super_admin
+from app.dependencies import assert_group_access, require_admin_access, require_super_admin
 from app.models.grupo import Grupo
 from app.models.usuario import Usuario
 from app.schemas.grupo import GrupoActionResponse, GrupoCreate, GrupoEstadoUpdate, GrupoResponse, GrupoUpdate
@@ -37,14 +37,10 @@ def ensure_slug_available(db: Session, slug: str, exclude_id_grupo: int | None =
 
 @router.get("", response_model=list[GrupoResponse])
 def list_grupos(
-    db: Session = Depends(get_db), current_user: Usuario | None = Depends(get_optional_current_user)
+    db: Session = Depends(get_db), current_user: Usuario = Depends(require_admin_access)
 ) -> list[Grupo]:
     query = select(Grupo).order_by(Grupo.nombre_grupo)
-    if current_user is None:
-        query = query.where(Grupo.estado == "ACTIVO")
-    elif current_user.rol not in {"SUPER_ADMIN", "LIDER_GRUPO"}:
-        raise HTTPException(status_code=403, detail="Sin permiso")
-    elif current_user.rol == "LIDER_GRUPO":
+    if current_user.rol == "LIDER_GRUPO":
         query = query.where(Grupo.id_grupo == current_user.id_grupo)
     return list(db.scalars(query).all())
 
@@ -85,7 +81,7 @@ def create_grupo(
 def get_grupo(
     grupo_id_or_slug: str,
     db: Session = Depends(get_db),
-    current_user: Usuario | None = Depends(get_optional_current_user),
+    current_user: Usuario = Depends(require_admin_access),
 ) -> Grupo:
     if grupo_id_or_slug.isdigit():
         grupo = db.get(Grupo, int(grupo_id_or_slug))
@@ -95,13 +91,7 @@ def get_grupo(
 
     if grupo is None:
         raise HTTPException(status_code=404, detail="Grupo no encontrado")
-    if current_user is None:
-        if grupo.estado != "ACTIVO":
-            raise HTTPException(status_code=404, detail="Grupo no encontrado")
-    elif current_user.rol not in {"SUPER_ADMIN", "LIDER_GRUPO"}:
-        raise HTTPException(status_code=403, detail="Sin permiso")
-    else:
-        assert_group_access(current_user, grupo.id_grupo)
+    assert_group_access(current_user, grupo.id_grupo)
     return grupo
 
 
@@ -110,8 +100,9 @@ def update_grupo(
     id_grupo: int,
     payload: GrupoUpdate,
     db: Session = Depends(get_db),
-    _current_user: Usuario = Depends(require_super_admin),
+    current_user: Usuario = Depends(require_admin_access),
 ) -> dict[str, bool | Grupo]:
+    assert_group_access(current_user, id_grupo)
     grupo = db.get(Grupo, id_grupo)
     if grupo is None:
         raise HTTPException(status_code=404, detail="Grupo no encontrado")
@@ -142,8 +133,9 @@ def update_estado_grupo(
     id_grupo: int,
     payload: GrupoEstadoUpdate,
     db: Session = Depends(get_db),
-    _current_user: Usuario = Depends(require_super_admin),
+    current_user: Usuario = Depends(require_admin_access),
 ) -> dict[str, bool | Grupo]:
+    assert_group_access(current_user, id_grupo)
     grupo = db.get(Grupo, id_grupo)
     if grupo is None:
         raise HTTPException(status_code=404, detail="Grupo no encontrado")

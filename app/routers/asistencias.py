@@ -19,8 +19,13 @@ router = APIRouter(prefix="/asistencias", tags=["asistencias"])
 
 
 @router.post("/confirmar", response_model=AttendanceActionResponse)
-def confirmar_asistencia(payload: AttendanceConfirmRequest, db: Session = Depends(get_db)) -> dict[str, object]:
-    validate_member_event(db, payload.id_miembro, payload.id_evento)
+def confirmar_asistencia(
+    payload: AttendanceConfirmRequest, db: Session = Depends(get_db),
+    current_user: Usuario = Depends(require_admin_access),
+) -> dict[str, object]:
+    miembro, evento = validate_member_event(db, payload.id_miembro, payload.id_evento)
+    assert_group_access(current_user, miembro.id_grupo)
+    assert_group_access(current_user, evento.id_grupo)
     confirmacion = normalize_choice(payload.confirmacion, CONFIRMATION_VALUES, "confirmacion")
     asistencia = get_or_create_attendance(db, payload.id_miembro, payload.id_evento)
     asistencia.confirmacion = confirmacion

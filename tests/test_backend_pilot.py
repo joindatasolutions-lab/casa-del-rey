@@ -97,10 +97,9 @@ def test_routes_are_registered() -> None:
 @db_integration
 def test_health_and_public_lookup() -> None:
     assert client.get("/api/health").status_code == 200
-    assert client.get("/api/grupos/red-solteros-1").status_code == 200
+    assert client.get("/api/grupos/red-solteros-1").status_code == 401
     response = client.get("/api/miembros/buscar", params={"celular": "57 3128896624", "grupo_id": 1})
-    assert response.status_code == 200
-    assert response.json()["exists"] is True
+    assert response.status_code == 401
 
 
 @db_integration
@@ -138,6 +137,7 @@ def test_admin_crud_roles_events_and_attendance() -> None:
 
         member_response = client.post(
             "/api/miembros",
+            headers=auth_header(leader_token),
             json={"id_grupo": group_id, "nombre": "Miembro", "apellido": "Test", "genero": "H", "celular": phones[0]},
         )
         assert member_response.status_code == 201
@@ -182,6 +182,7 @@ def test_admin_crud_roles_events_and_attendance() -> None:
 
         assert client.post(
             "/api/asistencias/confirmar",
+            headers=auth_header(leader_token),
             json={"id_miembro": member_id, "id_evento": event_id, "confirmacion": "ASISTIRA"},
         ).status_code == 200
         assert client.patch(

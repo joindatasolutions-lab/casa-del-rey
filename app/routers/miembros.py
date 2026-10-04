@@ -54,7 +54,11 @@ def list_miembros(
 
 
 @router.get("/buscar", response_model=MiembroSearchResponse)
-def buscar_miembro(celular: str, grupo_id: int, db: Session = Depends(get_db)) -> dict[str, bool | Miembro | None]:
+def buscar_miembro(
+    celular: str, grupo_id: int, db: Session = Depends(get_db),
+    current_user: Usuario = Depends(require_admin_access),
+) -> dict[str, bool | Miembro | None]:
+    assert_group_access(current_user, grupo_id)
     get_active_group(db, grupo_id)
     normalized_phone = require_valid_phone(celular)
     miembro = find_member_by_group_and_phone(db, grupo_id, normalized_phone)
@@ -62,7 +66,11 @@ def buscar_miembro(celular: str, grupo_id: int, db: Session = Depends(get_db)) -
 
 
 @router.post("", response_model=MiembroCreateResponse, status_code=status.HTTP_201_CREATED)
-def create_miembro(payload: MiembroCreate, db: Session = Depends(get_db)) -> dict[str, bool | Miembro]:
+def create_miembro(
+    payload: MiembroCreate, db: Session = Depends(get_db),
+    current_user: Usuario = Depends(require_admin_access),
+) -> dict[str, bool | Miembro]:
+    assert_group_access(current_user, payload.id_grupo)
     get_active_group(db, payload.id_grupo)
     nombre = require_non_empty(payload.nombre, "nombre")
     apellido = require_non_empty(payload.apellido, "apellido")

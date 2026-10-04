@@ -17,7 +17,7 @@ def get_current_user(
         raise HTTPException(status_code=401, detail="No autenticado")
     payload = decode_access_token(credentials.credentials)
     user_id = payload.get("sub")
-    if user_id is None:
+    if payload.get("scope") == "public_attendance" or not str(user_id).isdigit():
         raise HTTPException(status_code=401, detail="Token invalido")
     usuario = db.get(Usuario, int(user_id))
     if usuario is None or usuario.estado != "ACTIVO":
@@ -33,7 +33,7 @@ def get_optional_current_user(
         return None
     payload = decode_access_token(credentials.credentials)
     user_id = payload.get("sub")
-    if user_id is None:
+    if payload.get("scope") == "public_attendance" or not str(user_id).isdigit():
         raise HTTPException(status_code=401, detail="Token invalido")
     usuario = db.get(Usuario, int(user_id))
     if usuario is None or usuario.estado != "ACTIVO":

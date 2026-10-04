@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
 from app.middleware import request_logging_middleware
-from app.routers import asistencias, auth, eventos, grupos, health, miembros
+from app.routers import asistencias, auth, eventos, grupos, health, miembros, public
 
 settings = get_settings()
 app = FastAPI(title="Casa del Rey API", version="0.1.0")
@@ -23,3 +23,4 @@ app.include_router(grupos.router, prefix="/api")
 app.include_router(miembros.router, prefix="/api")
 app.include_router(eventos.router, prefix="/api")
 app.include_router(asistencias.router, prefix="/api")
+app.include_router(public.router, prefix="/api")

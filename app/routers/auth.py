@@ -16,7 +16,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/login", response_model=LoginResponse)
 def login(payload: LoginRequest, db: Session = Depends(get_db)) -> LoginResponse:
-    usuario = db.scalars(select(Usuario).where(Usuario.email == payload.email)).first()
+    usuario = db.scalars(select(Usuario).where(Usuario.email == payload.email)).one_or_none()
     if usuario is None or usuario.estado != "ACTIVO" or not verify_password(payload.password, usuario.password_hash):
         raise HTTPException(status_code=401, detail="Credenciales invalidas")
     usuario.ultimo_acceso = datetime.now(timezone.utc)

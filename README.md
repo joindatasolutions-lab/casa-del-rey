@@ -351,11 +351,7 @@ curl http://127.0.0.1:8000/api/eventos/5/asistencia
 ## Endpoints publicos
 
 - `GET /api/health`
-- `GET /api/grupos/{id_grupo_o_slug}`
-- `GET /api/grupos/{id_grupo}/eventos/proximo`
-- `GET /api/miembros/buscar?celular=3001234567&grupo_id=1`
-- `POST /api/miembros`
-- `POST /api/asistencias/confirmar`
+- `POST /api/auth/login`
 
 ## Endpoints protegidos
 
@@ -366,6 +362,11 @@ Authorization: Bearer TU_TOKEN
 ```
 
 - `GET /api/auth/me`
+- `GET /api/grupos/{id_grupo_o_slug}`
+- `GET /api/grupos/{id_grupo}/eventos/proximo`
+- `GET /api/miembros/buscar?celular=3001234567&grupo_id=1`
+- `POST /api/miembros`
+- `POST /api/asistencias/confirmar`
 - `GET /api/grupos`
 - `POST /api/grupos`
 - `PATCH /api/grupos/{id_grupo}`
@@ -390,6 +391,27 @@ Authorization: Bearer TU_TOKEN
 `SUPER_ADMIN` puede operar sobre todos los grupos.
 
 `LIDER_GRUPO` solo puede operar sobre su `id_grupo`. Si intenta operar otro grupo, la API responde `403`.
+
+## Identificacion publica por celular
+
+El portal solicita solo el celular y consulta `miembros`, sin exigir una cuenta en
+`usuarios`. `POST /api/public/identificar` recibe `{"celular":"3001234567"}` y devuelve
+si existe, su nombre, su grupo y un token limitado al flujo de asistencia publica.
+No verifica la titularidad del numero ni concede acceso administrativo.
+
+El miembro registrado ve su grupo y puede confirmar su propia asistencia. Un celular
+nuevo puede elegir un grupo activo y completar el registro; desde entonces queda
+limitado a ese grupo. Los registros inactivos o duplicados requieren revision del responsable.
+La API revalida la asociacion en cada peticion, incluido al abrir enlaces directos.
+
+El portal usa `/api/public/me`, `/api/public/grupos`, `/api/public/grupos/{slug}`,
+`/api/public/grupos/{id}/eventos/proximo`, `/api/public/miembros` y
+`/api/public/asistencias/confirmar` con el token publico. Los endpoints administrativos
+siguen requiriendo correo y contrasena a traves de `/api/auth/login`; el superadministrador
+conserva la consulta de todos los grupos en el panel administrativo.
+
+Desplegar backend y `frontend-public` juntos. Este flujo no requiere agregar celulares
+a `usuarios`, cambiar contrasenas ni migrar la base de datos.
 
 ## Tests
 

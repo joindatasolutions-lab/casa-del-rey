@@ -103,7 +103,11 @@ def list_eventos_grupo(
 
 
 @router.get("/grupos/{id_grupo}/eventos/proximo", response_model=EventoResponse)
-def get_proximo_evento(id_grupo: int, db: Session = Depends(get_db)) -> Evento:
+def get_proximo_evento(
+    id_grupo: int, db: Session = Depends(get_db),
+    current_user: Usuario = Depends(require_admin_access),
+) -> Evento:
+    assert_group_access(current_user, id_grupo)
     return get_next_group_event(db, id_grupo)
 
 
